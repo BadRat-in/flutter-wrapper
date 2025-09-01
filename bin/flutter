@@ -7,31 +7,26 @@ set -e
 # GitHub: https://github.com/badrat-in/flutter-wrapper
 # -----------------------------
 
-FLUTTER_BIN=$(which flutter)
-FLUTTERFLOW_BIN="$HOME/Library/Application\ Support/io.flutterflow.prod.mac/flutter/bin/flutter"
+FLUTTER_BIN="/Applications/flutter/bin/flutter"
+FLUTTERFLOW_BIN="$HOME/Library/Application Support/io.flutterflow.prod.mac/flutter/bin/flutter"
 
 # Default engine (can be overridden via env)
-ENGINE=${FLUTTER_ENGINE:-flutter}
-
-# Determine which Flutter binary to use
-if [[ -n "$FLUTTER_WRAPPER_VERSION" ]]; then
-    if [[ "$FLUTTER_WRAPPER_VERSION" == "flutterflow" ]]; then
-        REAL_FLUTTER="$FLUTTERFLOW_BIN"
-    else
-        REAL_FLUTTER="$FLUTTER_BIN"
-    fi
+if [[ -f ~/.flutter_wrapper_engine ]]; then
+    ENGINE=$(cat ~/.flutter_wrapper_engine)
 else
-    # Fallback to default ENGINE
-    REAL_FLUTTER=$([[ "$ENGINE" == "flutterflow" ]] && echo "$FLUTTERFLOW_BIN" || echo "$FLUTTER_BIN")
+    ENGINE="flutter"  # default
 fi
+
+# Decide which real Flutter binary based on engine
+REAL_FLUTTER=$([[ "$ENGINE" == "flutterflow" ]] && echo "$FLUTTERFLOW_BIN" || echo "$FLUTTER_BIN")
 
 # -----------------------------
 # Helper Commands
 # -----------------------------
 case "$1" in
   use)
-    export FLUTTER_WRAPPER_VERSION="$2"
-    echo "Using Flutter version: $FLUTTER_WRAPPER_VERSION"
+    echo "$2" > ~/.flutter_wrapper_engine
+    echo "Using Flutter version: $2"
     exit 0
     ;;
   icons)
@@ -64,10 +59,16 @@ case "$1" in
       echo "[INFO] Updated pubspec.yaml → ${VERSION_NAME}+${BUILD_NUMBER}"
     fi
 
-    exec "$REAL_FLUTTER" build "$PLATFORM" "$@"
+    echo "[INFO] Building Flutter app for $PLATFORM"
+    "$REAL_FLUTTER" build "$PLATFORM" "$@"
     ;;
   *)
     # All other flutter commands
-    exec "$REAL_FLUTTER" "$@"
+    echo "[INFO] Running command $1"
+    "$REAL_FLUTTER" "$@"
     ;;
 esac
+
+# Return the exit code of the last command executed
+EXIT_CODE=$?
+return $EXIT_CODE
