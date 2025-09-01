@@ -1,0 +1,73 @@
+#!/usr/bin/env zsh
+set -e
+
+# -----------------------------
+# Flutter Wrapper
+# -----------------------------
+# GitHub: https://github.com/badrat-in/flutter-wrapper
+# -----------------------------
+
+FLUTTER_BIN=$(which flutter)
+FLUTTERFLOW_BIN="$HOME/Library/Application\ Support/io.flutterflow.prod.mac/flutter/bin/flutter"
+
+# Default engine (can be overridden via env)
+ENGINE=${FLUTTER_ENGINE:-flutter}
+
+# Determine which Flutter binary to use
+if [[ -n "$FLUTTER_WRAPPER_VERSION" ]]; then
+    if [[ "$FLUTTER_WRAPPER_VERSION" == "flutterflow" ]]; then
+        REAL_FLUTTER="$FLUTTERFLOW_BIN"
+    else
+        REAL_FLUTTER="$FLUTTER_BIN"
+    fi
+else
+    # Fallback to default ENGINE
+    REAL_FLUTTER=$([[ "$ENGINE" == "flutterflow" ]] && echo "$FLUTTERFLOW_BIN" || echo "$FLUTTER_BIN")
+fi
+
+# -----------------------------
+# Helper Commands
+# -----------------------------
+case "$1" in
+  use)
+    export FLUTTER_WRAPPER_VERSION="$2"
+    echo "Using Flutter version: $FLUTTER_WRAPPER_VERSION"
+    exit 0
+    ;;
+  icons)
+    shift
+    zsh "$(dirname $0)/../scripts/generate-icons.zsh" "$@"
+    exit 0
+    ;;
+  resize)
+    shift
+    zsh "$(dirname $0)/../scripts/resize-screenshots.zsh" "$@"
+    exit 0
+    ;;
+  build)
+    # Auto-versioning
+    PUBSPEC="pubspec.yaml"
+    PLATFORM=$2
+    shift 2
+
+    if [[ -f $PUBSPEC ]]; then
+      # Extract version using regex
+      VERSION_NAME=$(grep -Eo 'version:\s*([0-9]+\.[0-9]+\.[0-9]+)' "$PUBSPEC" | head -n1 | awk '{print $2}')
+    else
+      VERSION_NAME="0.0.1"
+    fi
+
+    BUILD_NUMBER=$(git rev-list --count HEAD)
+
+    if [[ -f $PUBSPEC ]]; then
+      sed -i '' "s/^version:.*/version: ${VERSION_NAME}+${BUILD_NUMBER}/" "$PUBSPEC"
+      echo "[INFO] Updated pubspec.yaml → ${VERSION_NAME}+${BUILD_NUMBER}"
+    fi
+
+    exec "$REAL_FLUTTER" build "$PLATFORM" "$@"
+    ;;
+  *)
+    # All other flutter commands
+    exec "$REAL_FLUTTER" "$@"
+    ;;
+esac
