@@ -89,7 +89,7 @@ flutter build ipa
 Clone the repo and add the `bin` folder to your `$PATH`:
 
 ```zsh
-git clone https://github.com/badrat-in/flutter-wapper.git ~/flutter-wrapper
+git clone https://github.com/badrat-in/flutter-wrapper.git ~/flutter-wrapper
 export PATH="$HOME/flutter-wrapper/bin:$PATH"
 ```
 
