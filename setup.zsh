@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -e
 
-TARGET="$HOME/.zsh/flutter-wapper"
+TARGET="$HOME/flutter-wapper"
 
 if [ ! -d "$TARGET" ]; then
   git clone https://github.com/badrat-in/flutter-wapper.git "$TARGET"

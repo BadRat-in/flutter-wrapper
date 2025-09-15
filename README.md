@@ -74,7 +74,7 @@ flutter build ipa
 
 ### 3. Optional Setup (`setup.zsh`)
 
-- Clones wrapper repo into `~/.zsh/flutter-wrapper`.
+- Clones wrapper repo into `~/flutter-wrapper`.
 - Adds wrapper to `$PATH` in `.zshrc`.
 - Reloads shell to enable immediate use.
 
@@ -89,8 +89,8 @@ flutter build ipa
 Clone the repo and add the `bin` folder to your `$PATH`:
 
 ```zsh
-git clone https://github.com/badrat-in/flutter-wapper.git ~/.zsh/flutter-wrapper
-export PATH="$HOME/.zsh/flutter-wrapper/bin:$PATH"
+git clone https://github.com/badrat-in/flutter-wapper.git ~/flutter-wrapper
+export PATH="$HOME/flutter-wrapper/bin:$PATH"
 ```
 
 ---
@@ -100,7 +100,7 @@ export PATH="$HOME/.zsh/flutter-wrapper/bin:$PATH"
 For first-time setup:
 
 ```zsh
-~/.zsh/flutter-wrapper/setup.zsh
+~/flutter-wrapper/setup.zsh
 ```
 
 This will automatically:
