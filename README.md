@@ -44,13 +44,16 @@ flutter use flutterflow
 
 > The wrapper remembers the chosen Flutter version **for the current terminal session**. Once a session ends, the default version will be used unless you run `use` again.
 
-- Supports standard Flutter commands:
+- Supports standard Flutter commands, including `create`, `doctor`, etc.
+- Provides a unified help command to show wrapper and native Flutter options.
 
 ```zsh
-flutter run
-flutter build apk
-flutter build appbundle
-flutter build ipa
+# Get a unified list of wrapper and Flutter commands
+flutter help
+
+# Any standard command works
+flutter create my_app
+flutter doctor
 ```
 
 ---

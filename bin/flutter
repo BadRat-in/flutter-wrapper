@@ -24,6 +24,48 @@ REAL_FLUTTER=$([[ "$ENGINE" == "flutterflow" ]] && echo "$FLUTTERFLOW_BIN" || ec
 # Helper Commands
 # -----------------------------
 case "$1" in
+  help|--help|-h)
+    case "$2" in
+      use)
+        echo "Usage: flutter use [flutter|flutterflow]"
+        echo ""
+        echo "Switches the Flutter engine for the current terminal session."
+        echo ""
+        echo "Arguments:"
+        echo "  flutter       Use the system-installed Flutter SDK."
+        echo "  flutterflow   Use the FlutterFlow-specific Flutter SDK."
+        ;;
+      icons)
+        echo "Usage: flutter icons [input_image.png]"
+        echo ""
+        echo "Generates app icons for iOS and Android from a source image."
+        echo ""
+        echo "Arguments:"
+        echo "  [input_image.png]   Optional. Path to the source image."
+        echo "                      Defaults to './assets/images/app_launcher_icon.png'."
+        ;;
+      resize)
+        echo "Usage: flutter resize [--path DIR] [--device iphone|ipad]"
+        echo ""
+        echo "Resizes screenshots for the App Store and Play Store."
+        echo ""
+        echo "Options:"
+        echo "  --path DIR     Path to the directory containing the screenshots."
+        echo "                 Defaults to '~/Desktop/Screenshots'."
+        echo "  --device TYPE  Device type for resizing presets: 'iphone' or 'ipad'."
+        echo "                 Defaults to 'iphone'."
+        ;;
+      *)
+        echo "Flutter Wrapper Commands:"
+        echo "  use flutter|flutterflow   - Switch Flutter version for the session"
+        echo "  icons [input_image.png]   - Generate app icons"
+        echo "  resize --path ...         - Resize screenshots"
+        echo ""
+        "$REAL_FLUTTER" "$@" # Pass the original help command
+        ;;
+    esac
+    exit 0
+    ;;
   use)
     echo "$2" > ~/.flutter_wrapper_engine
     echo "Using Flutter version: $2"
@@ -40,6 +82,12 @@ case "$1" in
     exit 0
     ;;
   build)
+    # If no subcommand is provided (e.g., "flutter build"), pass through.
+    if [[ -z "$2" ]]; then
+      "$REAL_FLUTTER" "$@"
+      exit $?
+    fi
+
     # Auto-versioning
     PUBSPEC="pubspec.yaml"
     PLATFORM=$2
@@ -64,7 +112,7 @@ case "$1" in
     ;;
   *)
     # All other flutter commands
-    echo "[INFO] Running command $1"
+    echo "[INFO] Running: flutter $@"
     "$REAL_FLUTTER" "$@"
     ;;
 esac

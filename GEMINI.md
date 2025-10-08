@@ -19,12 +19,19 @@ This project is a collection of shell scripts, so there is no traditional "build
     flutter use flutterflow
     ```
 
+*   **Getting Help:**
+    ```zsh
+    # Show wrapper and native Flutter commands
+    flutter help
+    ```
+
 *   **Running and building Flutter apps:**
     ```zsh
+    # All standard Flutter commands are supported
+    flutter create my_app
+    flutter doctor
     flutter run
     flutter build apk
-    flutter build appbundle
-    flutter build ipa
     ```
 
 *   **Generating app icons:**
