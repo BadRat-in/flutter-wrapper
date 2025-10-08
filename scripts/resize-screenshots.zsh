@@ -2,6 +2,9 @@
 
 set -e
 
+# Ensure dependencies are installed
+zsh "$(dirname "$0")/install-dependencies.zsh"
+
 DEFAULT_PATH=~/Desktop/Screenshots
 DEVICE_TYPE="iphone"
 

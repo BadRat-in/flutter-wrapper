@@ -17,36 +17,8 @@ ANDROID_DRAWABLE_PATH="./android/app/src/main/res/drawable"
 ANDROID_VALUES_PATH="./android/app/src/main/res/values"
 ANDROID_LAUNCH_PATH="./android/app/src/main/res/drawable/launch_background.xml"
 
-# Function to install ImageMagick
-install_imagemagick() {
-    echo "ImageMagick is not installed. Installing ImageMagick..."
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS (using Homebrew)
-        if command -v brew &> /dev/null; then
-            brew install imagemagick
-        else
-            echo "Homebrew is not installed. Please install Homebrew first (https://brew.sh/)."
-            exit 1
-        fi
-    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        # Linux (apt-based systems)
-        if command -v apt-get &> /dev/null; then
-            sudo apt-get update
-            sudo apt-get install -y imagemagick
-        else
-            echo "Unsupported package manager. Please install ImageMagick manually."
-            exit 1
-        fi
-    else
-        echo "Unsupported operating system. Please install ImageMagick manually."
-        exit 1
-    fi
-}
-
-# Ensure ImageMagick is installed
-if ! command -v magick &> /dev/null; then
-    install_imagemagick
-fi
+# Ensure dependencies are installed
+zsh "$(dirname "$0")/install-dependencies.zsh"
 
 # Create iOS App Icons (in the designated folder)
 mkdir -p $IOS_ICON_PATH
