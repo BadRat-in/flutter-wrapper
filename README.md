@@ -75,42 +75,30 @@ flutter doctor
 
 ---
 
-### 3. Optional Setup (`setup.zsh`)
-
-- Clones wrapper repo into `~/flutter-wrapper`.
-- Adds wrapper to `$PATH` in `.zshrc`.
-- Reloads shell to enable immediate use.
-
-> Developers with the wrapper already installed do **not** need to run this again.
-
----
-
 ## Installation
 
-### 1. Manual Installation
-
-Clone the repo and add the `bin` folder to your `$PATH`:
+The recommended way to install is to use the remote installer script.
 
 ```zsh
-git clone https://github.com/badrat-in/flutter-wrapper.git ~/flutter-wrapper
-export PATH="$HOME/flutter-wrapper/bin:$PATH"
+zsh -c "$(curl -fsSL https://raw.githubusercontent.com/badrat-in/flutter-wrapper/main/setup.zsh)"
 ```
 
----
+The setup script will automatically:
 
-### 2. Setup Script
+- Check for `git` (a required dependency).
+- Clone the repository to `~/.flutter-wrapper`.
+- Add the wrapper's `bin` directory to your `.zshrc` file.
 
-For first-time setup:
+After the script finishes, restart your terminal or run `source ~/.zshrc` to apply the changes.
+
+### Manual Installation
+
+If you prefer, you can clone the repository and add the `bin` directory to your system's `PATH` manually.
 
 ```zsh
-~/flutter-wrapper/setup.zsh
+git clone https://github.com/badrat-in/flutter-wrapper.git ~/.flutter-wrapper
+export PATH="$HOME/.flutter-wrapper/bin:$PATH"
 ```
-
-This will automatically:
-
-- Clone the wrapper to a standard location.
-- Add it to `$PATH` in `.zshrc`.
-- Reload the shell.
 
 ---
 
@@ -153,9 +141,30 @@ flutter <command>
 
 ## Contributing
 
-- Open issues for bugs or feature requests.
-- Pull requests welcome. Keep scripts modular (`generate-icons`, `resize-screenshots`).
-- Follow coding standards and include tests when applicable.
+We actively welcome contributions! If you have an idea for a feature that you think should be part of this wrapper, we encourage you to build it and submit a pull request. This project is built for the community, by the community.
+
+### Reporting Bugs & Proposing Solutions
+
+If you encounter a bug, please [open an issue](https://github.com/badrat-in/flutter-wrapper/issues). To help us resolve it quickly, please include:
+- A clear, descriptive title.
+- Detailed steps to reproduce the bug.
+- Any relevant error messages and the output of `flutter --version`.
+
+If you have a solution in mind, please feel free to describe it in the issue or, even better, submit a pull request with the fix.
+
+### Suggesting & Adding Features
+
+Have an idea for a new feature? Don't hesitate to [open an issue](https://github.com/badrat-in/flutter-wrapper/issues) to start a discussion. If you believe your feature would be a great addition, we encourage you to implement it and open a pull request.
+
+### Submitting Pull Requests
+
+1.  **Fork** the repository.
+2.  **Create a new branch** (`git checkout -b feature/your-amazing-feature`).
+3.  **Make your changes.** Keep them focused and modular.
+4.  **Commit** your changes with a clear, descriptive message.
+5.  **Push** your branch to your fork (`git push origin feature/your-amazing-feature`).
+6.  **Open a pull request** against the `main` branch.
+7.  Clearly describe the problem and solution in your pull request description.
 
 ---
 
